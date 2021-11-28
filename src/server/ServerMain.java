@@ -2,8 +2,10 @@ package server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerMain {
+	private ConcurrentHashMap<String, ServerThread> users = new ConcurrentHashMap<>();
 
 	public ServerMain() throws Exception{
 		
@@ -13,7 +15,7 @@ public class ServerMain {
 		// infinite while loop: wait for new connections
 		while(true) {
 			Socket socket = server_socket.accept();
-			ServerThread server_thread = new ServerThread(socket);
+			ServerThread server_thread = new ServerThread(socket, users);
 			Thread thread = new Thread(server_thread);
 			thread.start();
 		}
