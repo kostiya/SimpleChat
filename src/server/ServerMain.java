@@ -2,20 +2,19 @@ package server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerMain {
-	private ConcurrentHashMap<String, ServerThread> users = new ConcurrentHashMap<>();
+	private static final int SERVER_PORT = 2020;
 
 	public ServerMain() throws Exception{
 		
-		ServerSocket server_socket = new ServerSocket(2020);
-		System.out.println("Port 2020 is now open.");
+		ServerSocket server_socket = new ServerSocket(SERVER_PORT);
+		System.out.println("Port " + SERVER_PORT + " is now open.");
 		
 		// infinite while loop: wait for new connections
 		while(true) {
 			Socket socket = server_socket.accept();
-			ServerThread server_thread = new ServerThread(socket, users);
+			ServerThread server_thread = new ServerThread(socket);
 			Thread thread = new Thread(server_thread);
 			thread.start();
 		}
